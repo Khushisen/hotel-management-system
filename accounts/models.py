@@ -6,8 +6,10 @@ from django.contrib.auth.models import User
 
 class Amenities(models.Model):
     name = models.CharField(max_length=1000)
+    icon = models.ImageField(upload_to='amenities')
     
-    def __str__(self) -> str:
+    
+    def __str__(self):
         return self.name
 
 class HotelUser(User):

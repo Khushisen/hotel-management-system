@@ -181,12 +181,18 @@ def register_vendor(request):
 
     return render(request, 'vendor/register_vendor.html')
         
+#views.py
+
 @login_required(login_url='login_vendor')
 def add_hotel(request):
     if request.method == "POST":
         hotel_name = request.POST.get('hotel_name')
         hotel_description = request.POST.get('hotel_description')
         ameneties= request.POST.getlist('ameneties')
+        for ameneti in ameneties:
+            ameneti = Ameneties.objects.get(id=ameneti)
+            hotel_obj.ameneties.add(ameneti)
+            hotel_obj.save()
         hotel_price= request.POST.get('hotel_price')
         hotel_offer_price= request.POST.get('hotel_offer_price')
         hotel_location= request.POST.get('hotel_location')
@@ -203,17 +209,35 @@ def add_hotel(request):
             hotel_slug = hotel_slug,
             hotel_owner = hotel_vendor
         )
-
-        for ameneti in ameneties:
-            ameneti = Ameneties.objects.get(id = ameneti)
-            hotel_obj.ameneties.add(ameneti)
-            hotel_obj.save()
-
-
+            
         messages.success(request, "Hotel Created")
-        return redirect('/account/add-hotel/')
+        return redirect('/account/dashboard/')
 
 
     ameneties = Ameneties.objects.all()
 
     return render(request, 'vendor/add_hotel.html', context = {'ameneties' : ameneties})
+
+
+@login_required(login_url='login_vendor')
+def upload_images(request, slug):
+    hotel_obj = Hotel.objects.get(hotel_slug = slug)
+    if request.method == "POST":
+        image = request.FILES['image']
+        print(image)
+        HotelImages.objects.create(
+        hotel = hotel_obj,
+        image = image
+        )
+        return HttpResponseRedirect(request.path_info)
+
+    return render(request, 'vendor/upload_images.html', context = {'images' : hotel_obj.hotel_images.all()})
+
+@login_required(login_url='login_vendor')
+def delete_image(request, id):
+    print(id)
+    print("#######")
+    hotel_image = HotelImages.objects.get(id = id)
+    hotel_image.delete()
+    messages.success(request, "Hotel Image deleted")
+    return redirect('/account/dashboard/')

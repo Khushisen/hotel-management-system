@@ -8,8 +8,8 @@
   <div class="col-6 mx-auto card shadow p-4" style="border:none">
     <h2>Add Hotel</h2>
       <form method="POST">
-    
-
+    {% include "utils/alerts.html" %}
+{% csrf_token %}
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
             <input id="email" type="text" name="hotel_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -27,8 +27,6 @@
 
               </div>
 
-
-
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
                 <input id="email" type="number" name="hotel_offer_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -40,6 +38,18 @@
                 <input id="email" type="text" name="hotel_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
 
               </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel ameneties</label>
+
+              <select name="ameneties" class="form-select form-select-sm" multiple aria-label="Small select example">
+                {% for amenetie in ameneties %}
+
+                <option value="{{amenetie.id}}">{{amenetie.name}}</option>
+
+                {% endfor %}
+              </select>
+              </div>
+
           <button type="submit" class="btn btn-primary">Submit</button>
 
         </form>

@@ -12,5 +12,5 @@ urlpatterns = [
     path('register-vendor/',views.register_vendor,name='register_vendor'),
     path('dashboard/',views.dashboard,name="dashboard"),
     path('add-hotel/', views.add_hotel , name="add_hotel"),
-    
+    path('delete_image/<id>',views.delete_image,name="delete_image"),
 ]
