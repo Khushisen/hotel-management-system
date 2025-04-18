@@ -1,7 +1,15 @@
+from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import User 
-
 # Create your models here.
+
+
+class Amenities(models.Model):
+    name = models.CharField(max_length=1000)
+    
+    def __str__(self) -> str:
+        return self.name
+
 class HotelUser(User):
     profile_picture = models.ImageField(upload_to='profile')
     phone_number = models.CharField(unique=True, max_length=100)
@@ -38,6 +46,12 @@ class Hotel(models.Model):
     hotel_offer_price = models.FloatField()
     hotel_location = models.TextField()
     is_active = models.BooleanField(default = True)
+    
+    def save(self,) ->None:
+        from .utils import generateSlug
+        if not self.pk:
+            self.hotel_slug = generateSlug(self.hotel_name)
+        return super().save()
     
     
 class HotelImages(models.Model):
