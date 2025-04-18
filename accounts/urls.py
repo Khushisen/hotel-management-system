@@ -13,4 +13,6 @@ urlpatterns = [
     path('dashboard/',views.dashboard,name="dashboard"),
     path('add-hotel/', views.add_hotel , name="add_hotel"),
     path('delete_image/<id>',views.delete_image,name="delete_image"),
+    path('edit-hotel/<slug>',views.edit_hotel,name="edit_hotel"),
+    path('logout/',views.logout_view,name="logout_view"),
 ]
